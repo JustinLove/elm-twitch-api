@@ -24,6 +24,33 @@ module Twitch.Helix.Decode exposing
   , sampleClip
   )
 
+{-| Decoders for the Helix API.
+
+# OAuth tokens
+@docs Token, token
+
+# Users
+@docs User, users
+
+# Streams
+@docs LiveStream, liveStreams
+
+# Follows
+@docs Follow, follows
+
+# Games
+@docs Game, games
+
+# Videos
+@docs Video, VideoType, Viewable, videos
+
+# Clips
+@docs Clip, clips
+
+# Sample data
+@docs sampleToken, sampleUser, sampleLiveStream, sampleGame, sampleFollow, sampleVideo, sampleClip
+-}
+
 import Twitch.Parse as Parse
 
 import Json.Decode exposing (..)
@@ -31,8 +58,13 @@ import Parser
 import Date
 import Time exposing (Time)
 
+{-| Sample OAuth token.
+-}
+sampleToken : String
 sampleToken = """{ sub = "12345678", iss = "https://api.twitch.tv/api", aud = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", exp = 1511110246, iat = 1511109346 }"""
 
+{-| Record for decoded OAuth tokens
+-}
 type alias Token =
   { sub : String
   , iss : String
@@ -41,6 +73,12 @@ type alias Token =
   , iat : Int
   }
 
+{-| Json Decoder for OAuth tokens.
+
+    userId = token
+      |> Maybe.andThen (Result.toMaybe << Jwt.decodeToken Twitch.Helix.Decode.token)
+      |> Maybe.map .sub
+-}
 token : Decoder Token
 token =
   map5 Token
@@ -50,6 +88,9 @@ token =
     (field "exp" int)
     (field "iat" int)
 
+{-| Sample data for a user
+-}
+sampleUser : String
 sampleUser = """
 {"data":[{
    "id":"44322889",
@@ -65,6 +106,8 @@ sampleUser = """
 }]}
 """
 
+{-| Record for decoded users.
+-}
 type alias User =
   { id : String
   , login : String
@@ -78,6 +121,8 @@ type alias User =
   , email : Maybe String
   }
 
+{-| Json Decoder for users
+-}
 users : Decoder (List User)
 users =
   field "data" (list user)
@@ -96,6 +141,9 @@ user =
     |> map2 (|>) (field "view_count" int)
     |> map2 (|>) (maybe (field "email" string))
 
+{-| Sample data for streams
+-}
+sampleLiveStream : String
 sampleLiveStream = """
 {"data":
    [
@@ -120,6 +168,8 @@ sampleLiveStream = """
 }
 """
 
+{-| Record for decoded Streams data
+-}
 type alias LiveStream =
   { channelId : String
   , userId : String
@@ -129,6 +179,8 @@ type alias LiveStream =
   , thumbnailUrl : String
   }
 
+{-| Json Decoder from streams
+-}
 liveStreams : Decoder (List LiveStream)
 liveStreams =
   field "data" (list stream)
@@ -143,6 +195,9 @@ stream =
     (field "viewer_count" int)
     (field "thumbnail_url" string)
 
+{-| Sample data for games
+-}
+sampleGame : String
 sampleGame = """
 {"data":
    [
@@ -155,12 +210,16 @@ sampleGame = """
 }
 """
 
+{-| Record for decoded Game
+-}
 type alias Game =
   { id : String
   , name : String
   , boxArtUrl : String
   }
 
+{-| Json Decoder for games
+-}
 games : Decoder (List Game)
 games =
   field "data" (list game)
@@ -172,6 +231,9 @@ game =
     (field "name" string)
     (field "box_art_url" string)
 
+{-| Sample dat for follows
+-}
+sampleFollow : String
 sampleFollow = """
 {"data":
    [
@@ -190,11 +252,15 @@ sampleFollow = """
 }
 """
 
+{-| Record for a decoded follow
+-}
 type alias Follow =
   { from_id : String
   , to_id : String
   }
 
+{-| Json Decoder for follows
+-}
 follows : Decoder (List Follow)
 follows =
   field "data" (list follow)
@@ -205,6 +271,9 @@ follow =
     (field "from_id" string)
     (field "to_id" string)
 
+{-| Sample data for a video
+-}
+sampleVideo : String
 sampleVideo = """
 {
   "data": [{
@@ -225,6 +294,8 @@ sampleVideo = """
   "pagination":{"cursor":"eyJiIjpudWxsLCJhIjoiMTUwMzQ0MTc3NjQyNDQyMjAwMCJ9"}
 }"""
 
+{-| Record for decoded videos. viewable, video_type, and duration are lightly interpreted.
+-}
 type alias Video =
   { id : String
   , userId : String
@@ -241,6 +312,8 @@ type alias Video =
   , duration : Time
   }
 
+{-| Json Decoder for videos
+-}
 videos : Decoder (List Video)
 videos =
   field "data" (list video)
@@ -262,6 +335,8 @@ video =
     |> map2 (|>) (field "type" videoType)
     |> map2 (|>) (field "duration" duration)
 
+{-| Enumerted type for the viewable status
+-}
 type Viewable
   = Public
   | Private
@@ -275,6 +350,8 @@ viewable =
       _ -> Private
     )
 
+{-| Enumerated type for video_type attribute, does include an escape hatch in case other types are added in the future.
+-}
 type VideoType
   = Upload
   | Archive
@@ -291,7 +368,9 @@ videoType =
       _ -> Other s
     )
 
-
+{-| Sample data for a clips.
+-}
+sampleClip : String
 sampleClip = """
 {
   "data":
@@ -312,6 +391,8 @@ sampleClip = """
 }
 """
 
+{-| Record for a decoded clip.
+-}
 type alias Clip =
   { id : String
   , url : String
@@ -327,6 +408,8 @@ type alias Clip =
   , thumbnailUrl : String
   }
 
+{-| Json Decoder for clips.
+-}
 clips : Decoder (List Clip)
 clips =
   field "data" (list clip)
@@ -363,30 +446,3 @@ timeStamp =
       Ok d -> succeed (Date.toTime d)
       Err err -> fail err
     )
-
-sampleHost = """
-{"hosts":[{"host_id":69626522,"target_id":56623426,"host_login":"stormyiceleopard","target_login":"wondible","host_display_name":"StormyIceLeopard","target_display_name":"wondible"},{"host_id":36610797,"target_id":56623426,"host_login":"doginlake","target_login":"wondible","host_display_name":"DogInLake","target_display_name":"wondible"},{"host_id":59692084,"target_id":56623426,"host_login":"katnox","target_login":"wondible","host_display_name":"katnox","target_display_name":"wondible"},{"host_id":25503934,"target_id":56623426,"host_login":"haskentv","target_login":"wondible","host_display_name":"haskentv","target_display_name":"wondible"},{"host_id":138565742,"target_id":56623426,"host_login":"2laughor2cry","target_login":"wondible","host_display_name":"2LaughOr2Cry","target_display_name":"wondible"},{"host_id":176430307,"target_id":56623426,"host_login":"ossorakgaming","target_login":"wondible","host_display_name":"OssorakGaming","target_display_name":"wondible"},{"host_id":59716837,"target_id":56623426,"host_login":"joeyschefferap","target_login":"wondible","host_display_name":"joeyschefferap","target_display_name":"wondible"}]}
-"""
-
-type alias Host =
-  { hostId : String
-  , targetId : String
-  , hostLogin : String
-  , targetLogin : String
-  , hostDisplayName : String
-  , targetDisplayName : String
-  }
-
-hosts : Decoder (List Host)
-hosts =
-  field "hosts" (list host)
-
-host : Decoder Host
-host =
-  map6 Host
-    ((field "host_id" int) |> map toString)
-    ((field "target_id" int) |> map toString)
-    (field "host_login" string)
-    (field "target_login" string)
-    (field "host_display_name" string)
-    (field "target_display_name" string)

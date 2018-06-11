@@ -4,11 +4,19 @@ module Twitch.ClipsV2.Decode exposing
   , sampleClip
   )
 
+{-| Decoders for the Clips API at `clips.twitch.tv/api/v2/clips/` Note that this is an unofficial API, requests should be made with Http.send rather than Twitch.Helix.send.
+
+@docs Clip, clip, sampleClip
+-}
+
 import Json.Decode exposing (..)
 import Date
 import Time exposing (Time)
 import Dict exposing (Dict)
 
+{-| Sample data
+-}
+sampleClip : String
 sampleClip = """
 {
   "broadcaster_channel_url": "https://www.twitch.tv/wondible",
@@ -51,6 +59,8 @@ sampleClip = """
   }
 """
 
+{-| Record for decoded clip data.
+-}
 type alias Clip =
   { broadcasterChannelUrl : String
   , broadcasterDisplayName : String
@@ -85,6 +95,8 @@ type alias Clip =
   , views : Int
   }
 
+{-| Decoder for a single clip
+-}
 clip : Decoder Clip
 clip =
   succeed Clip
