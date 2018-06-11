@@ -1,42 +1,39 @@
 module Twitch.Helix.Decode exposing
-  ( Token
-  , User
-  , LiveStream
-  , Game
+  ( User
+  , users
+  , sampleUser
   , Follow
+  , follows
+  , sampleFollow
+  , LiveStream
+  , liveStreams
+  , sampleLiveStream
+  , Game
+  , games
+  , sampleGame
   , Video
+  , videos
   , VideoType(..)
   , Viewable(..)
-  , Clip
-  , token
-  , users
-  , liveStreams
-  , games
-  , follows
-  , videos
-  , clips
-  , sampleToken
-  , sampleUser
-  , sampleLiveStream
-  , sampleGame
-  , sampleFollow
   , sampleVideo
+  , Clip
+  , clips
   , sampleClip
+  , Token
+  , token
+  , sampleToken
   )
 
 {-| Decoders for the Helix API.
 
-# OAuth tokens
-@docs Token, token
-
 # Users
 @docs User, users
 
-# Streams
-@docs LiveStream, liveStreams
-
 # Follows
 @docs Follow, follows
+
+# Streams
+@docs LiveStream, liveStreams
 
 # Games
 @docs Game, games
@@ -46,6 +43,9 @@ module Twitch.Helix.Decode exposing
 
 # Clips
 @docs Clip, clips
+
+# OAuth tokens
+@docs Token, token
 
 # Sample data
 @docs sampleToken, sampleUser, sampleLiveStream, sampleGame, sampleFollow, sampleVideo, sampleClip
@@ -58,53 +58,7 @@ import Parser
 import Date
 import Time exposing (Time)
 
-{-| Sample OAuth token.
--}
-sampleToken : String
-sampleToken = """{ sub = "12345678", iss = "https://api.twitch.tv/api", aud = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", exp = 1511110246, iat = 1511109346 }"""
-
-{-| Record for decoded OAuth tokens
--}
-type alias Token =
-  { sub : String
-  , iss : String
-  , aud : String
-  , exp : Int
-  , iat : Int
-  }
-
-{-| Json Decoder for OAuth tokens.
-
-    userId = token
-      |> Maybe.andThen (Result.toMaybe << Jwt.decodeToken Twitch.Helix.Decode.token)
-      |> Maybe.map .sub
--}
-token : Decoder Token
-token =
-  map5 Token
-    (field "sub" string)
-    (field "iss" string)
-    (field "aud" string)
-    (field "exp" int)
-    (field "iat" int)
-
-{-| Sample data for a user
--}
-sampleUser : String
-sampleUser = """
-{"data":[{
-   "id":"44322889",
-   "login":"dallas",
-   "display_name":"dallas",
-   "type":"staff",
-   "broadcaster_type":"",
-   "description":"Just a gamer playing games and chatting. :)",
-   "profile_image_url":"https://static-cdn.jtvnw.net/jtv_user_pictures/dallas-profile_image-1a2c906ee2c35f12-300x300.png",
-   "offline_image_url":"https://static-cdn.jtvnw.net/jtv_user_pictures/dallas-channel_offline_image-1a2c906ee2c35f12-1920x1080.png",
-   "view_count":191836881,
-   "email":"login@provider.com"
-}]}
-"""
+-------- Users -------
 
 {-| Record for decoded users.
 -}
@@ -141,32 +95,67 @@ user =
     |> map2 (|>) (field "view_count" int)
     |> map2 (|>) (maybe (field "email" string))
 
-{-| Sample data for streams
+{-| Sample data for a user
 -}
-sampleLiveStream : String
-sampleLiveStream = """
+sampleUser : String
+sampleUser = """
+{"data":[{
+   "id":"44322889",
+   "login":"dallas",
+   "display_name":"dallas",
+   "type":"staff",
+   "broadcaster_type":"",
+   "description":"Just a gamer playing games and chatting. :)",
+   "profile_image_url":"https://static-cdn.jtvnw.net/jtv_user_pictures/dallas-profile_image-1a2c906ee2c35f12-300x300.png",
+   "offline_image_url":"https://static-cdn.jtvnw.net/jtv_user_pictures/dallas-channel_offline_image-1a2c906ee2c35f12-1920x1080.png",
+   "view_count":191836881,
+   "email":"login@provider.com"
+}]}
+"""
+
+-------- Follows -------
+
+{-| Record for a decoded follow
+-}
+type alias Follow =
+  { from_id : String
+  , to_id : String
+  }
+
+{-| Json Decoder for follows
+-}
+follows : Decoder (List Follow)
+follows =
+  field "data" (list follow)
+
+follow : Decoder Follow
+follow =
+  map2 Follow
+    (field "from_id" string)
+    (field "to_id" string)
+
+{-| Sample data for follows
+-}
+sampleFollow : String
+sampleFollow = """
 {"data":
    [
       {
-         "id":"26007494656",
-         "user_id":"23161357",
-         "game_id":"417752",
-         "community_ids":[
-            "5181e78f-2280-42a6-873d-758e25a7c313",
-            "848d95be-90b3-44a5-b143-6e373754c382",
-            "fd0eab99-832a-4d7e-8cc0-04d73deb2e54"
-         ],
-         "type":"live",
-         "title":"Hey Guys, It's Monday - Twitter: @Lirik",
-         "viewer_count":32575,
-         "started_at":"2017-08-14T16:08:32Z",
-         "language":"en",
-         "thumbnail_url":"https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg"
-      }, 
-   ], 
-   "pagination":{"cursor":"eyJiIjpudWxsLCJhIjp7Ik9mZnNldCI6MjB9fQ=="}
+         "from_id":"171003792",
+         "to_id":"23161357",
+         "followed_at":"2017-08-22T22:55:24Z"
+      },
+      {
+         "from_id":"113627897",
+         "to_id":"23161357",
+         "followed_at":"2017-08-22T22:55:04Z"
+      },
+   ],
+   "pagination":{"cursor":"eyJiIjpudWxsLCJhIjoiMTUwMzQ0MTc3NjQyNDQyMjAwMCJ9"}
 }
 """
+
+-------- Streams -------
 
 {-| Record for decoded Streams data
 -}
@@ -195,20 +184,34 @@ stream =
     (field "viewer_count" int)
     (field "thumbnail_url" string)
 
-{-| Sample data for games
+{-| Sample data for streams
 -}
-sampleGame : String
-sampleGame = """
+sampleLiveStream : String
+sampleLiveStream = """
 {"data":
    [
       {
-         "id":"493057",
-         "name":"PLAYERUNKNOWN'S BATTLEGROUNDS",
-         "box_art_url":"https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-{width}x{height}.jpg"
-      }
-   ]
+         "id":"26007494656",
+         "user_id":"23161357",
+         "game_id":"417752",
+         "community_ids":[
+            "5181e78f-2280-42a6-873d-758e25a7c313",
+            "848d95be-90b3-44a5-b143-6e373754c382",
+            "fd0eab99-832a-4d7e-8cc0-04d73deb2e54"
+         ],
+         "type":"live",
+         "title":"Hey Guys, It's Monday - Twitter: @Lirik",
+         "viewer_count":32575,
+         "started_at":"2017-08-14T16:08:32Z",
+         "language":"en",
+         "thumbnail_url":"https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg"
+      }, 
+   ], 
+   "pagination":{"cursor":"eyJiIjpudWxsLCJhIjp7Ik9mZnNldCI6MjB9fQ=="}
 }
 """
+
+-------- Game -------
 
 {-| Record for decoded Game
 -}
@@ -231,68 +234,22 @@ game =
     (field "name" string)
     (field "box_art_url" string)
 
-{-| Sample dat for follows
+{-| Sample data for games
 -}
-sampleFollow : String
-sampleFollow = """
+sampleGame : String
+sampleGame = """
 {"data":
    [
       {
-         "from_id":"171003792",
-         "to_id":"23161357",
-         "followed_at":"2017-08-22T22:55:24Z"
-      },
-      {
-         "from_id":"113627897",
-         "to_id":"23161357",
-         "followed_at":"2017-08-22T22:55:04Z"
-      },
-   ],
-   "pagination":{"cursor":"eyJiIjpudWxsLCJhIjoiMTUwMzQ0MTc3NjQyNDQyMjAwMCJ9"}
+         "id":"493057",
+         "name":"PLAYERUNKNOWN'S BATTLEGROUNDS",
+         "box_art_url":"https://static-cdn.jtvnw.net/ttv-boxart/PLAYERUNKNOWN%27S%20BATTLEGROUNDS-{width}x{height}.jpg"
+      }
+   ]
 }
 """
 
-{-| Record for a decoded follow
--}
-type alias Follow =
-  { from_id : String
-  , to_id : String
-  }
-
-{-| Json Decoder for follows
--}
-follows : Decoder (List Follow)
-follows =
-  field "data" (list follow)
-
-follow : Decoder Follow
-follow =
-  map2 Follow
-    (field "from_id" string)
-    (field "to_id" string)
-
-{-| Sample data for a video
--}
-sampleVideo : String
-sampleVideo = """
-{
-  "data": [{
-    "id": "234482848",
-    "user_id": "67955580",
-    "title": "-",
-    "description": "",
-    "created_at": "2018-03-02T20:53:41Z",
-    "published_at": "2018-03-02T20:53:41Z",
-    "url": "https://www.twitch.tv/videos/234482848",
-    "thumbnail_url": "https://static-cdn.jtvnw.net/s3_vods/bebc8cba2926d1967418_chewiemelodies_27786761696_805342775/thumb/thumb0-%{width}x%{height}.jpg",
-    "viewable": "public",
-    "view_count": 142,
-    "language": "en",
-    "type": "archive",
-    "duration": "3h8m33s"
-  }],
-  "pagination":{"cursor":"eyJiIjpudWxsLCJhIjoiMTUwMzQ0MTc3NjQyNDQyMjAwMCJ9"}
-}"""
+-------- Video -------
 
 {-| Record for decoded videos. viewable, video_type, and duration are lightly interpreted.
 -}
@@ -368,28 +325,30 @@ videoType =
       _ -> Other s
     )
 
-{-| Sample data for a clips.
+{-| Sample data for a video
 -}
-sampleClip : String
-sampleClip = """
+sampleVideo : String
+sampleVideo = """
 {
-  "data":
-  [{
-    "id": "AwkwardHelplessSalamanderSwiftRage",
-    "url": "https://clips.twitch.tv/AwkwardHelplessSalamanderSwiftRage",
-    "embed_url": "https://clips.twitch.tv/embed?clip=AwkwardHelplessSalamanderSwiftRage",
-    "broadcaster_id": "67955580",
-    "creator_id": "53834192",
-    "video_id": "205586603",
-    "game_id": "488191",
+  "data": [{
+    "id": "234482848",
+    "user_id": "67955580",
+    "title": "-",
+    "description": "",
+    "created_at": "2018-03-02T20:53:41Z",
+    "published_at": "2018-03-02T20:53:41Z",
+    "url": "https://www.twitch.tv/videos/234482848",
+    "thumbnail_url": "https://static-cdn.jtvnw.net/s3_vods/bebc8cba2926d1967418_chewiemelodies_27786761696_805342775/thumb/thumb0-%{width}x%{height}.jpg",
+    "viewable": "public",
+    "view_count": 142,
     "language": "en",
-    "title": "babymetal",
-    "view_count": 10,
-    "created_at": "2017-11-30T22:34:18Z",
-    "thumbnail_url": "https://clips-media-assets.twitch.tv/157589949-preview-480x272.jpg"
-  }]
-}
-"""
+    "type": "archive",
+    "duration": "3h8m33s"
+  }],
+  "pagination":{"cursor":"eyJiIjpudWxsLCJhIjoiMTUwMzQ0MTc3NjQyNDQyMjAwMCJ9"}
+}"""
+
+-------- Clips -------
 
 {-| Record for a decoded clip.
 -}
@@ -429,6 +388,62 @@ clip =
     |> map2 (|>) (field "view_count" int)
     |> map2 (|>) (field "created_at" timeStamp)
     |> map2 (|>) (field "thumbnail_url" string)
+
+{-| Sample data for a clips.
+-}
+sampleClip : String
+sampleClip = """
+{
+  "data":
+  [{
+    "id": "AwkwardHelplessSalamanderSwiftRage",
+    "url": "https://clips.twitch.tv/AwkwardHelplessSalamanderSwiftRage",
+    "embed_url": "https://clips.twitch.tv/embed?clip=AwkwardHelplessSalamanderSwiftRage",
+    "broadcaster_id": "67955580",
+    "creator_id": "53834192",
+    "video_id": "205586603",
+    "game_id": "488191",
+    "language": "en",
+    "title": "babymetal",
+    "view_count": 10,
+    "created_at": "2017-11-30T22:34:18Z",
+    "thumbnail_url": "https://clips-media-assets.twitch.tv/157589949-preview-480x272.jpg"
+  }]
+}
+"""
+
+-------- OAuth Tokens -------
+
+{-| Record for decoded OAuth tokens
+-}
+type alias Token =
+  { sub : String
+  , iss : String
+  , aud : String
+  , exp : Int
+  , iat : Int
+  }
+
+{-| Json Decoder for OAuth tokens.
+
+    userId = token
+      |> Maybe.andThen (Result.toMaybe << Jwt.decodeToken Twitch.Helix.Decode.token)
+      |> Maybe.map .sub
+-}
+token : Decoder Token
+token =
+  map5 Token
+    (field "sub" string)
+    (field "iss" string)
+    (field "aud" string)
+    (field "exp" int)
+    (field "iat" int)
+
+{-| Sample OAuth token.
+-}
+sampleToken : String
+sampleToken = """{ sub = "12345678", iss = "https://api.twitch.tv/api", aud = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", exp = 1511110246, iat = 1511109346 }"""
+
 
 duration : Decoder Time
 duration =
