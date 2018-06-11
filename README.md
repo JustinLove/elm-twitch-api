@@ -17,3 +17,10 @@ Partial coverage of the APIs I have used, includes most the Helix (new Twitch AP
         , tagger = User
         , url = (fetchUserByNameUrl login)
         }
+
+## Example applications using this library:
+
+- https://github.com/JustinLove/following_videos
+- https://github.com/JustinLove/hostable
+- https://github.com/JustinLove/hosting-clips
+- https://github.com/JustinLove/schedule-from-videos
