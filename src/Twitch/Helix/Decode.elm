@@ -5,9 +5,9 @@ module Twitch.Helix.Decode exposing
   , Follow
   , follows
   , sampleFollow
-  , LiveStream
-  , liveStreams
-  , sampleLiveStream
+  , Stream
+  , streams
+  , sampleStream
   , Game
   , games
   , sampleGame
@@ -33,7 +33,7 @@ module Twitch.Helix.Decode exposing
 @docs Follow, follows
 
 # Streams
-@docs LiveStream, liveStreams
+@docs Stream, streams
 
 # Games
 @docs Game, games
@@ -48,7 +48,7 @@ module Twitch.Helix.Decode exposing
 @docs Token, token
 
 # Sample data
-@docs sampleToken, sampleUser, sampleLiveStream, sampleGame, sampleFollow, sampleVideo, sampleClip
+@docs sampleToken, sampleUser, sampleStream, sampleGame, sampleFollow, sampleVideo, sampleClip
 -}
 
 import Twitch.Parse as Parse
@@ -159,7 +159,7 @@ sampleFollow = """
 
 {-| Record for decoded Streams data
 -}
-type alias LiveStream =
+type alias Stream =
   { channelId : String
   , userId : String
   , gameId : String
@@ -170,13 +170,13 @@ type alias LiveStream =
 
 {-| Json Decoder from streams
 -}
-liveStreams : Decoder (List LiveStream)
-liveStreams =
+streams : Decoder (List Stream)
+streams =
   field "data" (list stream)
 
-stream : Decoder LiveStream
+stream : Decoder Stream
 stream =
-  map6 LiveStream
+  map6 Stream
     (field "id" string)
     (field "user_id" string)
     (field "game_id" string)
@@ -186,8 +186,8 @@ stream =
 
 {-| Sample data for streams
 -}
-sampleLiveStream : String
-sampleLiveStream = """
+sampleStream : String
+sampleStream = """
 {"data":
    [
       {
