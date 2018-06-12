@@ -1,6 +1,6 @@
 # Elm Twitch Api
 
-Decoders and a few other helpers for using Twitch.tv APIs.
+Decoders and a few other helpers for using [Twitch.tv APIs](https://dev.twitch.tv/docs/api/).
 
 Partial coverage of the APIs I have used, includes most the Helix (new Twitch API) and some additional decoders for unoffical hosts and clips APIS.)
 
