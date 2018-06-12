@@ -20,7 +20,7 @@ Partial coverage of the APIs I have used, includes most the Helix (new Twitch AP
 
 ## Example applications using this library:
 
-- https://github.com/JustinLove/following_videos
+- https://github.com/JustinLove/following_videos ([Following Videos](https://wondible.com/following_videos/))
 - https://github.com/JustinLove/hostable
-- https://github.com/JustinLove/hosting-clips
-- https://github.com/JustinLove/schedule-from-videos
+- https://github.com/JustinLove/hosting-clips ([Hosting Clips](https://wondible.com/hosting-clips/))
+- https://github.com/JustinLove/schedule-from-videos ([Schedule From Videos](https://wondible.com/schedule-from-videos/))
