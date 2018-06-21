@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "summary": "Decoders and a few other helpers for using Twitch.tv APIs",
-  "repository": "https://github.com/JustinLove/elm-twitch-api",
+  "repository": "https://github.com/JustinLove/elm-twitch-api.git",
   "license": "BSD3",
   "source-directories": [
     "src"
