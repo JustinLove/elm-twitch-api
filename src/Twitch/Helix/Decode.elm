@@ -163,8 +163,11 @@ type alias Stream =
   { channelId : String
   , userId : String
   , gameId : String
+  , communityIds : List String
   , title : String
   , viewerCount : Int
+  , startedAt : Time
+  , language : String
   , thumbnailUrl : String
   }
 
@@ -176,13 +179,16 @@ streams =
 
 stream : Decoder Stream
 stream =
-  map6 Stream
-    (field "id" string)
-    (field "user_id" string)
-    (field "game_id" string)
-    (field "title" string)
-    (field "viewer_count" int)
-    (field "thumbnail_url" string)
+  succeed Stream
+    |> map2 (|>) (field "id" string)
+    |> map2 (|>) (field "user_id" string)
+    |> map2 (|>) (field "game_id" string)
+    |> map2 (|>) (field "community_ids" (list string))
+    |> map2 (|>) (field "title" string)
+    |> map2 (|>) (field "viewer_count" int)
+    |> map2 (|>) (field "started_at" timeStamp)
+    |> map2 (|>) (field "language" string)
+    |> map2 (|>) (field "thumbnail_url" string)
 
 {-| Sample data for streams
 -}
