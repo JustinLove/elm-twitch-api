@@ -395,7 +395,7 @@ clip =
     |> map2 (|>) (field "created_at" timeStamp)
     |> map2 (|>) (field "thumbnail_url" string)
 
-{-| Sample data for a clips.
+{-| Sample data for a clip.
 -}
 sampleClip : String
 sampleClip = """

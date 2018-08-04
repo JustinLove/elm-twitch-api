@@ -1,6 +1,6 @@
-module Twitch.Helix exposing (send, twitchHeaders, authHeaders)
+module Twitch.Kraken exposing (send, twitchHeaders, authHeaders)
 
-{-| Helpers for sending Http requests to the Twitch Helix ("new Twitch API") endpoints.
+{-| Helpers for sending Http requests to the Twitch Kraken ("V5") endpoints.
 
 # Send a Request
 @docs send
@@ -14,20 +14,20 @@ Useful if you need to make your own Http call with additional headers.
 import Http
 import Json.Decode
 
-{-| Send a basic request to the Twitch Helix ("new Twitch API") endpoints. Lightweight wrapper around Http, so you can go back to basics if something else is needed. Auth is a token received from an oauth loop.
+{-| Send a basic request to the Twitch Kraken ("V5") endpoints. Lightweight wrapper around Http, so you can go back to basics if something else is needed. Auth is a token received from an oauth loop.
 
-    fetchUserByNameUrl : String -> String
-    fetchUserByNameUrl login =
-      "https://api.twitch.tv/helix/users?login=" ++ login
+    fetchCommunityByNameUrl : String -> String
+    fetchCommunityByNameUrl login =
+      "https://api.twitch.tv/kraken/communities?name=" ++ name
 
-    fetchUserByName : String -> Cmd Msg
-    fetchUserByName login =
-      Twitch.Helix.send <|
+    fetchCommunityByName : String -> Cmd Msg
+    fetchCommunityByName name =
+      Twitch.Kraken.send <|
         { clientId = TwitchId.clientId
         , auth = Nothing
-        , decoder = Twitch.Helix.Decode.users
-        , tagger = User
-        , url = (fetchUserByNameUrl login)
+        , decoder = Twitch.Kraken.Decode.community
+        , tagger = Community
+        , url = (fetchCommunityByNameUrl login)
         }
 -}
 send :
@@ -50,12 +50,13 @@ send {clientId, auth, decoder, tagger, url} =
 
 {-| Creates the client-id and outh headers.
 
-    Twitch.Helix.twitchHeaders clientId auth
+    Twitch.Kraken.twitchHeaders clientId auth
 -}
 twitchHeaders : String -> Maybe String -> List Http.Header
 twitchHeaders clientId auth =
   List.append
-    [ Http.header "Client-ID" clientId
+    [ Http.header "Accept" "application/vnd.twitchtv.v5+json"
+    , Http.header "Client-ID" clientId
     ] (authHeaders auth)
 
 {-| Creates the oauth header, given an oauth token.
