@@ -7,11 +7,13 @@
     "src"
   ],
   "exposed-modules": [
+    "Twitch.ClipsV2.Decode",
     "Twitch.Helix",
     "Twitch.Helix.Decode",
-    "Twitch.ClipsV2.Decode",
-    "Twitch.Tmi.Decode",
-    "Twitch.Template"
+    "Twitch.Kraken",
+    "Twitch.Kraken.Decode",
+    "Twitch.Template",
+    "Twitch.Tmi.Decode"
   ],
   "dependencies": {
     "elm-lang/core": "5.1.1 <= v < 6.0.0",
