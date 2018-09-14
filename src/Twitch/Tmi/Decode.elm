@@ -39,8 +39,8 @@ hosts =
 host : Decoder Host
 host =
   map6 Host
-    ((field "host_id" int) |> map toString)
-    ((field "target_id" int) |> map toString)
+    ((field "host_id" int) |> map String.fromInt)
+    ((field "target_id" int) |> map String.fromInt)
     (field "host_login" string)
     (field "target_login" string)
     (field "host_display_name" string)

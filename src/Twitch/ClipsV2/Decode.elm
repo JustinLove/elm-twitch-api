@@ -10,8 +10,8 @@ module Twitch.ClipsV2.Decode exposing
 -}
 
 import Json.Decode exposing (..)
-import Date
-import Time exposing (Time)
+import Iso8601
+import Time exposing (Posix)
 import Dict exposing (Dict)
 
 {-| Sample data
@@ -76,7 +76,7 @@ type alias Clip =
   , previewImage : String
   , thumbnails : Dict String String
   , communities : List String
-  , createdAt : Time
+  , createdAt : Posix
   , title : String
   , language : String
   , infoUrl : String
@@ -135,10 +135,5 @@ clip =
     |> map2 (|>) (field "duration" float)
     |> map2 (|>) (field "views" int)
 
-timeStamp : Decoder Time
-timeStamp =
-  string
-    |> andThen (\s -> case Date.fromString s of
-      Ok d -> succeed (Date.toTime d)
-      Err err -> fail err
-    )
+timeStamp : Decoder Posix
+timeStamp = Iso8601.decoder

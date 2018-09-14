@@ -12,9 +12,9 @@ module Twitch.Template exposing (imageTemplateUrl, imagePercentTemplateUrl)
 imageTemplateUrl : Int -> Int -> String -> String
 imageTemplateUrl w h =
   String.split "{width}"
-    >> String.join (toString w)
+    >> String.join (String.fromInt w)
     >> String.split "{height}"
-    >> String.join (toString h)
+    >> String.join (String.fromInt h)
 
 {-| Fills in templates with %{width} and %{height}.
 
@@ -23,6 +23,6 @@ imageTemplateUrl w h =
 imagePercentTemplateUrl : Int -> Int -> String -> String
 imagePercentTemplateUrl w h =
   String.split "%{width}"
-    >> String.join (toString w)
+    >> String.join (String.fromInt w)
     >> String.split "%{height}"
-    >> String.join (toString h)
+    >> String.join (String.fromInt h)

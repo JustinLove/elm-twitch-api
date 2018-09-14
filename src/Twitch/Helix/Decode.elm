@@ -55,8 +55,8 @@ import Twitch.Parse as Parse
 
 import Json.Decode exposing (..)
 import Parser
-import Date
-import Time exposing (Time)
+import Iso8601
+import Time exposing (Posix)
 
 -------- Users -------
 
@@ -166,7 +166,7 @@ type alias Stream =
   , communityIds : List String
   , title : String
   , viewerCount : Int
-  , startedAt : Time
+  , startedAt : Posix
   , language : String
   , thumbnailUrl : String
   }
@@ -264,15 +264,15 @@ type alias Video =
   , userId : String
   , title : String
   , description : String
-  , createdAt : Time
-  , publishedAt : Time
+  , createdAt : Posix
+  , publishedAt : Posix
   , url : String
   , thumbnailUrl : String
   , viewable : Viewable
   , viewCount : Int
   , language : String
   , videoType : VideoType
-  , duration : Time
+  , duration : Int
   }
 
 {-| Json Decoder for videos
@@ -369,7 +369,7 @@ type alias Clip =
   , language : String
   , title : String
   , viewCount : Int
-  , createdAt : Time
+  , createdAt : Posix
   , thumbnailUrl : String
   }
 
@@ -451,19 +451,13 @@ sampleToken : String
 sampleToken = """{ sub = "12345678", iss = "https://api.twitch.tv/api", aud = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", exp = 1511110246, iat = 1511109346 }"""
 
 
-duration : Decoder Time
+duration : Decoder Int
 duration =
   string
-    |> map (\s -> case Parser.run Parse.duration s of
-      Ok d -> d
-      Err err ->
-        let _ = Debug.log "duration parse error" err in 0
+    |> andThen (\s -> case Parser.run Parse.duration s of
+      Ok d -> succeed d
+      Err err -> fail ("duration parse error" ++ (Parser.deadEndsToString err))
     )
 
-timeStamp : Decoder Time
-timeStamp =
-  string
-    |> andThen (\s -> case Date.fromString s of
-      Ok d -> succeed (Date.toTime d)
-      Err err -> fail err
-    )
+timeStamp : Decoder Posix
+timeStamp = Iso8601.decoder
