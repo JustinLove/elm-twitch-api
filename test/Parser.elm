@@ -46,15 +46,15 @@ all = describe "parsering"
         (Parser.run (duration) "3s")
     , it "ignores invalid input" <|
       case (Parser.run duration "3x") of
-        Err err -> let _ = Debug.log "err" err in isTrue True
+        Err err -> let _ = Debug.log "err" (deadEndsToString err) in isTrue True
         Ok _ -> isTrue False
     , it "ignores invalid input" <|
       case (Parser.run duration "s") of
-        Err err -> let _ = Debug.log "err" err in isTrue True
+        Err err -> let _ = Debug.log "err" (deadEndsToString err) in isTrue True
         Ok _ -> isTrue False
     , it "ignores invalid input" <|
       case (Parser.run duration "3h39s") of
-        Err err -> let _ = Debug.log "err" err in isTrue True
+        Err err -> let _ = Debug.log "err" (deadEndsToString err) in isTrue True
         Ok _ -> isTrue False
     ]
   ]

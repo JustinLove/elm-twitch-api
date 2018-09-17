@@ -1,4 +1,4 @@
-module Twitch.Parse exposing (duration, int)
+module Twitch.Parse exposing (duration, int, deadEndsToString)
 
 import Parser.Advanced exposing (..)
 import Char
@@ -49,4 +49,19 @@ int =
         Nothing -> problem ("String.toInt failed on (" ++ str ++ ")")
       )
     )
+
+deadEndsToString : List (DeadEnd String String) -> String
+deadEndsToString deadEnds =
+  deadEnds
+    |> List.map deadEndToString
+    |> String.join "\n"
+
+deadEndToString : DeadEnd String String -> String
+deadEndToString {problem, contextStack} =
+  problem :: (contextStack |> List.map contextToString)
+    |> String.join " while: "
+
+contextToString : {r|context : String} -> String
+contextToString {context} =
+  context
 

@@ -54,7 +54,7 @@ module Twitch.Helix.Decode exposing
 import Twitch.Parse as Parse
 
 import Json.Decode exposing (..)
-import Parser
+import Parser.Advanced as Parser
 import Iso8601
 import Time exposing (Posix)
 
@@ -456,7 +456,7 @@ duration =
   string
     |> andThen (\s -> case Parser.run Parse.duration s of
       Ok d -> succeed d
-      Err err -> fail ("duration parse error" ++ (Parser.deadEndsToString err))
+      Err err -> fail ("duration parse error" ++ (Parse.deadEndsToString err))
     )
 
 timeStamp : Decoder Posix
