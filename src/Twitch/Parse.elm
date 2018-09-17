@@ -6,33 +6,42 @@ import Char
 
 duration : Parser Int
 duration =
-  succeed (\h m s -> (60 * 60 * h + 60 * m + s) * 1000)
-    |= (suffixedInt "h" |> withDefault 0)
-    |= (suffixedInt "m" |> withDefault 0)
-    |= (suffixedInt "s")
-    |. end
+  succeed (\i f -> (f i) * 1000)
+    |= int
+    |= oneOf
+      [ hxxmxxs
+      , mxxs
+      , s
+      ]
 
-withDefault : a -> Parser a -> Parser a
-withDefault default parser =
-  oneOf
-    [ backtrackable parser
-    , succeed default
-    ]
+hxxmxxs : Parser (Int -> Int)
+hxxmxxs =
+  succeed (\m s_ h -> h*60*60 + m*60 + s_)
+    |. symbol "h"
+    |= int
+    |. symbol "m"
+    |= int
+    |. symbol "s"
 
-suffixedInt : String -> Parser Int
-suffixedInt suffix =
-  --inContext ("int suffixed with " ++ suffix) <|
-    succeed (\i -> i)
-      |= int
-      |. (symbol suffix)
+mxxs : Parser (Int -> Int)
+mxxs =
+  succeed (\s_ m -> m*60 + s_)
+    |. symbol "m"
+    |= int
+    |. symbol "s"
+
+s : Parser (Int -> Int)
+s =
+  succeed (\s_ -> s_)
+    |. symbol "s"
 
 int : Parser Int
 int =
   --inContext "int" <|
     (getChompedString (chompWhile Char.isDigit)
-      |> andThen (\s -> case String.toInt s of
+      |> andThen (\str -> case String.toInt str of
         Just i -> succeed i
-        Nothing -> problem ("String.toInt failed on " ++ s)
+        Nothing -> problem ("String.toInt failed on " ++ str)
       )
     )
 
