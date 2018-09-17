@@ -15,7 +15,7 @@ duration =
 withDefault : a -> Parser a -> Parser a
 withDefault default parser =
   oneOf
-    [ parser
+    [ backtrackable parser
     , succeed default
     ]
 

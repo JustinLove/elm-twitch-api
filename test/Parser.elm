@@ -16,10 +16,14 @@ all = describe "parsering"
   [ describe "builtin functions"
     [ it "int" <|
       eql (Ok 11) (Parser.run Parser.int "11")
-    , it "does not handle suffixed int" <|
-      case (Parser.run Parser.int "11h") of
-        Err err -> let _ = Debug.log "err" err in isTrue True
-        Ok _ -> isTrue False
+    , it "does handle suffixed int" <|
+      case (Parser.run Parser.int "11h22m33s") of
+        Err err -> let _ = Debug.log "err" err in isTrue False
+        Ok i -> eql 11 i
+    , it "does not handle leading 0" <|
+      case (Parser.run Parser.int "02m3s") of
+        Err err -> let _ = Debug.log "err" err in isTrue False
+        Ok i -> eql 0 i -- we want 2
     ]
   , describe "custom functions"
     [ it "int" <|

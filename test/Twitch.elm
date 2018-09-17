@@ -17,7 +17,7 @@ all = describe "Deserialize"
     decodes <| Json.Decode.decodeString users sampleUser
   ]
 
-decodes : Result String a -> Expectation.Expectation
+decodes : Result Json.Decode.Error a -> Expectation.Expectation
 decodes result =
   isTrue (case result of
     Ok _ -> True
