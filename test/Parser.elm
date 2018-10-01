@@ -1,11 +1,13 @@
 import Twitch.Parse exposing (..)
 
-import Expectation exposing (eql, isTrue, isFalse)
+import Expectation exposing (isTrue, isFalse)
 import Test exposing (it, describe, Test)
 import Runner exposing (runAll)
 
 import Html exposing (Html)
 import Parser.Advanced as Parser exposing ((|.))
+
+eql = Expectation.eql Debug.toString
 
 main : Html msg
 main =

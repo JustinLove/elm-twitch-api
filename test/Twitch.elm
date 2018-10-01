@@ -1,11 +1,13 @@
 import Twitch.Helix.Decode exposing (User, users, sampleUser)
 
-import Expectation exposing (eql, isTrue, isFalse)
+import Expectation exposing (isTrue, isFalse)
 import Test exposing (it, describe, Test)
 import Runner exposing (runAll)
 
 import Html exposing (Html)
 import Json.Decode
+
+eql = Expectation.eql Debug.toString
 
 main : Html msg
 main =
