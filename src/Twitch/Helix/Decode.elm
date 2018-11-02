@@ -1,5 +1,7 @@
 module Twitch.Helix.Decode exposing
-  ( User
+  ( Paginated(..)
+  , paginated
+  , User
   , users
   , sampleUser
   , Follow
@@ -25,6 +27,9 @@ module Twitch.Helix.Decode exposing
   )
 
 {-| Decoders for the Helix API.
+
+# Pagination
+@docs Paginated, paginated
 
 # Users
 @docs User, users
@@ -57,6 +62,24 @@ import Json.Decode exposing (..)
 import Parser.Advanced as Parser
 import Iso8601
 import Time exposing (Posix)
+
+-------- Pagination -------
+
+{-| Wrapper for retreiving the pagination cursor
+-}
+type Paginated a = Paginated String a
+
+{-| Wrapper decoder for retreiving the pagination cursor
+
+    case Json.Decode.decodeString (paginated videos) sampleVideo of
+      Ok (Paginated cursor videos) -> ...
+      Err _ -> ...
+-}
+paginated : Decoder a -> Decoder (Paginated a)
+paginated decoder =
+  map2 Paginated
+    (field "pagination" (field "cursor" string))
+    decoder
 
 -------- Users -------
 
