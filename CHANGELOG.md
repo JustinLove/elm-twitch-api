@@ -1,5 +1,9 @@
 ## Elm Twitch API
 
+## 3.0.1
+
+- Update to http 2.0
+
 ## 3.0.0
 
 - Elm 0.19
