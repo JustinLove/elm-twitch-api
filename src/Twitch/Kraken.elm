@@ -38,14 +38,14 @@ send :
   , url : String
   } -> Cmd msg
 send {clientId, auth, decoder, tagger, url} =
-  Http.send tagger <| Http.request
+  Http.request
     { method = "GET"
     , headers = twitchHeaders clientId auth
     , url = url
     , body = Http.emptyBody
-    , expect = Http.expectJson decoder
+    , expect = Http.expectJson tagger decoder
     , timeout = Nothing
-    , withCredentials = False
+    , tracker = Nothing
     }
 
 {-| Creates the client-id and outh headers.
