@@ -1,5 +1,9 @@
 ## Elm Twitch API
 
+## 4.0.0
+
+- Add missing fields to Follow type, and renormalize it's existing field names
+
 ## 3.0.1
 
 - Update to http 2.0

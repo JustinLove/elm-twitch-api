@@ -118,8 +118,11 @@ sampleUser = """
 {-| Record for a decoded follow
 -}
 type alias Follow =
-  { from_id : String
-  , to_id : String
+  { fromId : String
+  , fromName : String
+  , toId : String
+  , toName : String
+  , followedAt : Posix
   }
 
 {-| Json Decoder for follows
@@ -130,30 +133,40 @@ follows =
 
 follow : Decoder Follow
 follow =
-  map2 Follow
+  map5 Follow
     (field "from_id" string)
+    (field "from_name" string)
     (field "to_id" string)
+    (field "to_name" string)
+    (field "followed_at" timeStamp)
 
 {-| Sample data for follows
 -}
 sampleFollow : String
 sampleFollow = """
-{"data":
+{
+   "total": 12345,
+   "data":
    [
       {
-         "from_id":"171003792",
-         "to_id":"23161357",
-         "followed_at":"2017-08-22T22:55:24Z"
+         "from_id": "171003792",
+         "from_name": "IIIsutha067III",
+         "to_id": "23161357",
+         "to_name": "LIRIK",
+         "followed_at": "2017-08-22T22:55:24Z"
       },
       {
-         "from_id":"113627897",
-         "to_id":"23161357",
-         "followed_at":"2017-08-22T22:55:04Z"
-      },
+         "from_id": "113627897",
+         "from_name": "Birdman616",
+         "to_id": "23161357",
+         "to_name": "LIRIK",
+         "followed_at": "2017-08-22T22:55:04Z"
+      }
    ],
-   "pagination":{"cursor":"eyJiIjpudWxsLCJhIjoiMTUwMzQ0MTc3NjQyNDQyMjAwMCJ9"}
-}
-"""
+   "pagination":{
+     "cursor": "eyJiIjpudWxsLCJhIjoiMTUwMzQ0MTc3NjQyNDQyMjAwMCJ9"
+   }
+}"""
 
 -------- Streams -------
 

@@ -1,4 +1,4 @@
-import Twitch.Helix.Decode exposing (User, users, sampleUser)
+import Twitch.Helix.Decode exposing (User, users, sampleUser, follows, sampleFollow)
 
 import Expectation exposing (isTrue, isFalse)
 import Test exposing (it, describe, Test)
@@ -17,6 +17,8 @@ all : Test
 all = describe "Deserialize"
   [ it "deserializes sample user" <|
     decodes <| Json.Decode.decodeString users sampleUser
+  , it "deserializes sample follow" <|
+    decodes <| Json.Decode.decodeString follows sampleFollow
   ]
 
 decodes : Result Json.Decode.Error a -> Expectation.Expectation
