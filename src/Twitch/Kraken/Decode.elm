@@ -124,6 +124,7 @@ subscription =
 
 {-| Sample data for a community.
 -}
+sampleSubscriptions : String
 sampleSubscriptions = """
 {
     "_total": 4,
