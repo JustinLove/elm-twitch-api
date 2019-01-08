@@ -19,6 +19,9 @@ module Twitch.Helix.Decode exposing
   , Clip
   , clips
   , sampleClip
+  , BitsLeader
+  , bitsLeaderboard
+  , sampleBitsLeaderboard
   , Token
   , token
   , sampleToken
@@ -44,11 +47,14 @@ module Twitch.Helix.Decode exposing
 # Clips
 @docs Clip, clips
 
+# Bits Leaderboard
+@docs BitsLeader, bitsLeaderboard
+
 # OAuth tokens
 @docs Token, token
 
 # Sample data
-@docs sampleToken, sampleUser, sampleStream, sampleGame, sampleFollow, sampleVideo, sampleClip
+@docs sampleToken, sampleUser, sampleStream, sampleGame, sampleFollow, sampleVideo, sampleClip, sampleBitsLeaderboard
 -}
 
 import Twitch.Parse as Parse
@@ -428,6 +434,58 @@ sampleClip = """
     "created_at": "2017-11-30T22:34:18Z",
     "thumbnail_url": "https://clips-media-assets.twitch.tv/157589949-preview-480x272.jpg"
   }]
+}
+"""
+
+-------- Bits Leaderboard -------
+
+{-| Record for a decoded bits leader.
+-}
+type alias BitsLeader =
+  { userId : String
+  , userName : String
+  , rank : Int
+  , score : Int
+  }
+
+{-| Json Decoder for clips.
+-}
+bitsLeaderboard : Decoder (List BitsLeader)
+bitsLeaderboard =
+  field "data" (list bitsLeader)
+
+bitsLeader : Decoder BitsLeader
+bitsLeader =
+  succeed BitsLeader
+    |> map2 (|>) (field "user_id" string)
+    |> map2 (|>) (field "user_name" string)
+    |> map2 (|>) (field "rank" int)
+    |> map2 (|>) (field "score" int)
+
+{-| Sample data for bits leaderboard.
+-}
+sampleBitsLeaderboard : String
+sampleBitsLeaderboard = """
+{
+    "data": [
+        {
+            "user_id": "158010205",
+            "user_name": "TundraCowboy",
+            "rank": 1,
+            "score": 12543
+        },
+        {
+            "user_id": "7168163",
+            "user_name": "Topramens",
+            "rank": 2,
+            "score": 6900
+        }
+    ],
+    "date_range": {
+        "started_at": "2018-02-05T08:00:00Z",
+        "ended_at": "2018-02-12T08:00:00Z"
+    },
+    "total": 2
 }
 """
 
