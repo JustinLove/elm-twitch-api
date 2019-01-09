@@ -1,5 +1,13 @@
 ## Elm Twitch API
 
+## 4.1.1
+
+- Fix syntax for Kraken auth token header
+
+## 4.1.0
+
+- Add Helix Bits Leaderboard and Kraken Subscriptions
+
 ## 4.0.0
 
 - Add missing fields to Follow type, and renormalize it's existing field names

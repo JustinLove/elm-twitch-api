@@ -65,6 +65,6 @@ authHeaders : Maybe String -> List Http.Header
 authHeaders auth =
   case auth of
     Just token ->
-      [ Http.header "Authorization" ("Bearer "++token) ]
+      [ Http.header "Authorization" ("OAuth "++token) ]
     Nothing ->
       []
