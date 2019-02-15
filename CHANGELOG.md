@@ -1,5 +1,9 @@
 ## Elm Twitch API
 
+## 4.2.0
+
+- The unofficial TMI hosts api stopped returning target name information for target= queries. Added new HostingTarget and hostingTarget type and decoder to correctly parse these responses.
+
 ## 4.1.1
 
 - Fix syntax for Kraken auth token header
