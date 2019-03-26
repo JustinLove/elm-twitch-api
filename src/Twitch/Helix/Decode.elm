@@ -22,6 +22,9 @@ module Twitch.Helix.Decode exposing
   , BitsLeader
   , bitsLeaderboard
   , sampleBitsLeaderboard
+  , Subscription
+  , subscriptions
+  , sampleSubscription
   , Token
   , token
   , sampleToken
@@ -50,11 +53,14 @@ module Twitch.Helix.Decode exposing
 # Bits Leaderboard
 @docs BitsLeader, bitsLeaderboard
 
+# Subscriptions
+@docs Subscriber, subscriptions
+
 # OAuth tokens
 @docs Token, token
 
 # Sample data
-@docs sampleToken, sampleUser, sampleStream, sampleGame, sampleFollow, sampleVideo, sampleClip, sampleBitsLeaderboard
+@docs sampleToken, sampleUser, sampleStream, sampleGame, sampleFollow, sampleVideo, sampleClip, sampleBitsLeaderboard, sampleSubscription
 -}
 
 import Twitch.Parse as Parse
@@ -448,7 +454,7 @@ type alias BitsLeader =
   , score : Int
   }
 
-{-| Json Decoder for clips.
+{-| Json Decoder for bits leaderboard.
 -}
 bitsLeaderboard : Decoder (List BitsLeader)
 bitsLeaderboard =
@@ -486,6 +492,59 @@ sampleBitsLeaderboard = """
         "ended_at": "2018-02-12T08:00:00Z"
     },
     "total": 2
+}
+"""
+
+-------- Subscription -------
+
+{-| Record for a decoded subscription.
+-}
+type alias Subscription =
+  { broadcasterId : String
+  , broadcasterName : String
+  , isGift : Bool
+  , tier : String
+  , planName : String
+  , userId : String
+  , userName : String
+  }
+
+{-| Json Decoder for subscriptions
+-}
+subscriptions : Decoder (List Subscription)
+subscriptions =
+  field "data" (list subscription)
+
+subscription : Decoder Subscription
+subscription =
+  succeed Subscription
+    |> map2 (|>) (field "broadcaster_id" string)
+    |> map2 (|>) (field "broadcaster_name" string)
+    |> map2 (|>) (field "is_gift" bool)
+    |> map2 (|>) (field "tier" string)
+    |> map2 (|>) (field "plan_name" string)
+    |> map2 (|>) (field "user_id" string)
+    |> map2 (|>) (field "user_name" string)
+
+{-| Sample data for subscriptions
+-}
+sampleSubscription : String
+sampleSubscription = """
+{
+     "data": [
+             {
+                  "broadcaster_id": "123",
+                  "broadcaster_name": "test_user",
+                  "is_gift": true,
+                  "tier": "1000",
+                  "plan_name": "The Ninjas",
+                  "user_id": "123",
+                  "user_name": "snoirf"
+             }
+     ],
+     "pagination": {
+             "cursor": "xxxx"
+     }
 }
 """
 
