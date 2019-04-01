@@ -54,7 +54,7 @@ module Twitch.Helix.Decode exposing
 @docs BitsLeader, bitsLeaderboard
 
 # Subscriptions
-@docs Subscriber, subscriptions
+@docs Subscription, subscriptions
 
 # OAuth tokens
 @docs Token, token
