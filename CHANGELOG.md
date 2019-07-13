@@ -3,6 +3,8 @@
 ## 5.0.0
 
 - Remove Kraken/V5 support. This is on depreciation track and all package features are removed or available in Helix.
+- Community ids removed from streams response, breaking previous decoder versions.
+- Added userName and tagIds to streams response
 
 ## 4.3.0
 

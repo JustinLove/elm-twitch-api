@@ -187,13 +187,14 @@ sampleFollow = """
 type alias Stream =
   { channelId : String
   , userId : String
+  , userName: String
   , gameId : String
-  , communityIds : List String
   , title : String
   , viewerCount : Int
   , startedAt : Posix
   , language : String
   , thumbnailUrl : String
+  , tagIds : List String
   }
 
 {-| Json Decoder from streams
@@ -207,38 +208,40 @@ stream =
   succeed Stream
     |> map2 (|>) (field "id" string)
     |> map2 (|>) (field "user_id" string)
+    |> map2 (|>) (field "user_name" string)
     |> map2 (|>) (field "game_id" string)
-    |> map2 (|>) (field "community_ids" (list string))
     |> map2 (|>) (field "title" string)
     |> map2 (|>) (field "viewer_count" int)
     |> map2 (|>) (field "started_at" timeStamp)
     |> map2 (|>) (field "language" string)
     |> map2 (|>) (field "thumbnail_url" string)
+    |> map2 (|>) (field "tag_ids" (list string))
 
 {-| Sample data for streams
 -}
 sampleStream : String
 sampleStream = """
-{"data":
-   [
-      {
-         "id":"26007494656",
-         "user_id":"23161357",
-         "game_id":"417752",
-         "community_ids":[
-            "5181e78f-2280-42a6-873d-758e25a7c313",
-            "848d95be-90b3-44a5-b143-6e373754c382",
-            "fd0eab99-832a-4d7e-8cc0-04d73deb2e54"
-         ],
-         "type":"live",
-         "title":"Hey Guys, It's Monday - Twitter: @Lirik",
-         "viewer_count":32575,
-         "started_at":"2017-08-14T16:08:32Z",
-         "language":"en",
-         "thumbnail_url":"https://static-cdn.jtvnw.net/previews-ttv/live_user_lirik-{width}x{height}.jpg"
-      }, 
-   ], 
-   "pagination":{"cursor":"eyJiIjpudWxsLCJhIjp7Ik9mZnNldCI6MjB9fQ=="}
+{
+  "data": [
+    {
+      "id": "34888049712",
+      "user_id": "117521448",
+      "user_name": "Lackowitz",
+      "game_id": "495064",
+      "type": "live",
+      "title": "Splatfest Prep Team Chaos | !multi",
+      "viewer_count": 8,
+      "started_at": "2019-07-13T12:57:25Z",
+      "language": "en",
+      "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_lackowitz-{width}x{height}.jpg",
+      "tag_ids": [
+        "6ea6bca4-4712-4ab9-a906-e3336a9d8039"
+      ]
+    }
+  ],
+  "pagination": {
+    "cursor": "eyJiIjpudWxsLCJhIjp7Ik9mZnNldCI6M319"
+  }
 }
 """
 

@@ -8,6 +8,8 @@ import Twitch.Helix.Decode exposing
   , sampleSubscription
   , bitsLeaderboard
   , sampleBitsLeaderboard
+  , streams
+  , sampleStream
   )
 
 import Expectation exposing (isTrue, isFalse)
@@ -33,6 +35,8 @@ all = describe "Deserialize"
     decodes <| Json.Decode.decodeString bitsLeaderboard sampleBitsLeaderboard
   , it "deserializes sample subscription" <|
     decodes <| Json.Decode.decodeString subscriptions sampleSubscription
+  , it "deserializes sample stream" <|
+    decodes <| Json.Decode.decodeString streams sampleStream
   ]
 
 decodes : Result Json.Decode.Error a -> Expectation.Expectation
