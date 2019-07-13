@@ -8,8 +8,6 @@
         "Twitch.ClipsV2.Decode",
         "Twitch.Helix",
         "Twitch.Helix.Decode",
-        "Twitch.Kraken",
-        "Twitch.Kraken.Decode",
         "Twitch.Template",
         "Twitch.Tmi.Decode"
     ],
