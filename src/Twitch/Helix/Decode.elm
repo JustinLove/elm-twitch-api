@@ -215,7 +215,7 @@ stream =
     |> map2 (|>) (field "started_at" timeStamp)
     |> map2 (|>) (field "language" string)
     |> map2 (|>) (field "thumbnail_url" string)
-    |> map2 (|>) (field "tag_ids" (list string))
+    |> map2 (|>) (field "tag_ids" (oneOf [ null [], list string ]))
 
 {-| Sample data for streams
 -}
@@ -237,6 +237,19 @@ sampleStream = """
       "tag_ids": [
         "6ea6bca4-4712-4ab9-a906-e3336a9d8039"
       ]
+    },
+    {
+      "id": "35662396160",
+      "user_id": "132567750",
+      "user_name": "elimere",
+      "game_id": "506078",
+      "type": "live",
+      "title": "New Hair, who dis? !SUBtember  |!dog | !social ",
+      "viewer_count": 0,
+      "started_at": "2019-09-15T01:00:27Z",
+      "language": "en",
+      "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_elimere-{width}x{height}.jpg",
+      "tag_ids": null
     }
   ],
   "pagination": {

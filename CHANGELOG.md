@@ -1,5 +1,9 @@
 ## Elm Twitch API
 
+## 5.0.1
+
+- Twitch is supplying nulls in stream `tag_ids`. They are translated to empty arrays.
+
 ## 5.0.0
 
 - Remove Kraken/V5 support. This is on depreciation track and all package features are removed or available in Helix.
