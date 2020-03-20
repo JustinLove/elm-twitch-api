@@ -11,11 +11,11 @@ Partial coverage of the APIs I have used.
     fetchUserByNameUrl login =
       "https://api.twitch.tv/helix/users?login=" ++ login
 
-    fetchUserByName : String -> Cmd Msg
-    fetchUserByName login =
+    fetchUserByName : String -> String -> Cmd Msg
+    fetchUserByName auth login =
       Twitch.Helix.send <|
         { clientId = TwitchId.clientId
-        , auth = Nothing
+        , auth = auth
         , decoder = Twitch.Helix.Decode.users
         , tagger = User
         , url = (fetchUserByNameUrl login)

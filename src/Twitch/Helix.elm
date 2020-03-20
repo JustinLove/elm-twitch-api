@@ -1,4 +1,4 @@
-module Twitch.Helix exposing (send, twitchHeaders, authHeaders)
+module Twitch.Helix exposing (send, twitchHeaders)
 
 {-| Helpers for sending Http requests to the Twitch Helix ("new Twitch API") endpoints.
 
@@ -20,11 +20,11 @@ import Json.Decode
     fetchUserByNameUrl login =
       "https://api.twitch.tv/helix/users?login=" ++ login
 
-    fetchUserByName : String -> Cmd Msg
-    fetchUserByName login =
+    fetchUserByName : String -> String -> Cmd Msg
+    fetchUserByName auth login =
       Twitch.Helix.send <|
         { clientId = TwitchId.clientId
-        , auth = Nothing
+        , auth = auth
         , decoder = Twitch.Helix.Decode.users
         , tagger = User
         , url = (fetchUserByNameUrl login)
@@ -32,7 +32,7 @@ import Json.Decode
 -}
 send :
   { clientId : String
-  , auth : Maybe String
+  , auth : String
   , decoder : Json.Decode.Decoder a
   , tagger : ((Result Http.Error a) -> msg)
   , url : String
@@ -52,18 +52,8 @@ send {clientId, auth, decoder, tagger, url} =
 
     Twitch.Helix.twitchHeaders clientId auth
 -}
-twitchHeaders : String -> Maybe String -> List Http.Header
-twitchHeaders clientId auth =
-  List.append
-    [ Http.header "Client-ID" clientId
-    ] (authHeaders auth)
-
-{-| Creates the oauth header, given an oauth token.
--}
-authHeaders : Maybe String -> List Http.Header
-authHeaders auth =
-  case auth of
-    Just token ->
-      [ Http.header "Authorization" ("Bearer "++token) ]
-    Nothing ->
-      []
+twitchHeaders : String -> String -> List Http.Header
+twitchHeaders clientId token =
+  [ Http.header "Client-ID" clientId
+  , Http.header "Authorization" ("Bearer "++token)
+  ]
