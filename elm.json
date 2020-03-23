@@ -5,7 +5,6 @@
     "license": "BSD-3-Clause",
     "version": "6.0.0",
     "exposed-modules": [
-        "Twitch.ClipsV2.Decode",
         "Twitch.Helix",
         "Twitch.Helix.Decode",
         "Twitch.Template",
