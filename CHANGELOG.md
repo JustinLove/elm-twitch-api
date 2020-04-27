@@ -4,6 +4,7 @@
 
 - Helix will require oauth login starting on 2020-04-30. The Helix.send auth parameter is no longer a Maybe, and the authHeaders function is no longer provided seperately.
 - The ClipsV2 module has been removed. The API is responding with 410 Gone.
+- Decoder for app access tokens
 
 ## 5.0.1
 
@@ -11,7 +12,7 @@
 
 ## 5.0.0
 
-- Remove Kraken/V5 support. This is on depreciation track and all package features are removed or available in Helix.
+a Remove Kraken/V5 support. This is on depreciation track and all package features are removed or available in Helix.
 - Community ids removed from streams response, breaking previous decoder versions.
 - Added userName and tagIds to streams response
 
