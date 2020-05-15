@@ -1,5 +1,9 @@
 ## Elm Twitch API
 
+## 7.0.0
+
+- access token module must be listed in elm.json; no code changes
+
 ## 6.0.0
 
 - Helix will require oauth login starting on 2020-04-30. The Helix.send auth parameter is no longer a Maybe, and the authHeaders function is no longer provided seperately.
