@@ -7,7 +7,7 @@ module Twitch.Helix exposing (send, twitchHeaders)
 
 # Header Helpers
 Useful if you need to make your own Http call with additional headers.
-@docs twitchHeaders, authHeaders
+@docs twitchHeaders
 
 -}
 
