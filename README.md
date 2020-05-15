@@ -5,7 +5,7 @@ Decoders and a few other helpers for using [Twitch.tv APIs](https://dev.twitch.t
 Partial coverage of the APIs I have used.
 
 - Includes most the Helix (new Twitch API).
-- Some additional decoders for unofficial hosts and clips APIS.
+- Some additional decoders for unofficial hosts.
 
     fetchUserByNameUrl : String -> String
     fetchUserByNameUrl login =
