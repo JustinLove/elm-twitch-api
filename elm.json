@@ -3,7 +3,7 @@
     "name": "JustinLove/elm-twitch-api",
     "summary": "Decoders and a few other helpers for using Twitch.tv APIs",
     "license": "BSD-3-Clause",
-    "version": "7.0.0",
+    "version": "6.1.0",
     "exposed-modules": [
         "Twitch.Helix",
         "Twitch.Helix.Decode",

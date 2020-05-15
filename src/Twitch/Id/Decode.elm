@@ -7,7 +7,7 @@ module Twitch.Id.Decode exposing
 {-| Decoders for the ID (oauth) API
 
 # App OAuth (OAuth Client Credentials Flow)
-@docs OAuth, oauth
+@docs AppOAuth, appOAuth
 
 # Sample data
 @docs sampleAppOAuth
@@ -18,7 +18,7 @@ import Json.Decode exposing (..)
 
 --------- App OAuth ----------
 
-{-| Record for App OAuth acess tokens
+{-| Record for App OAuth access tokens
 -}
 type alias AppOAuth =
   { accessToken : String
@@ -27,6 +27,8 @@ type alias AppOAuth =
   , tokenType : String
   }
 
+{-| Decoder for App OAuth access token
+-}
 appOAuth : Decoder AppOAuth
 appOAuth =
   succeed AppOAuth
@@ -39,6 +41,8 @@ appOAuth =
       )
     |> map2 (|>) (field "token_type" string)
 
+{-| Sample data for App OAuth access token
+-}
 sampleAppOAuth : String
 sampleAppOAuth = """
 {

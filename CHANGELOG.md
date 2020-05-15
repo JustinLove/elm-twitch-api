@@ -1,6 +1,6 @@
 ## Elm Twitch API
 
-## 7.0.0
+## 6.1.0
 
 - access token module must be listed in elm.json; no code changes
 
