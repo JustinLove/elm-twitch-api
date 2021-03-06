@@ -1,6 +1,6 @@
-import Twitch.Tmi.Decode exposing
-  ( HostingTarget
-  , hostingTarget
+import Twitch.Kraken.Decode exposing
+  ( Host
+  , hosts
   , sampleHost
   )
 
@@ -20,7 +20,7 @@ main =
 all : Test
 all = describe "Deserialize"
   [ it "deserializes sample host" <|
-    decodes <| Json.Decode.decodeString hostingTarget sampleHost
+    decodes <| Json.Decode.decodeString hosts sampleHost
   ]
 
 decodes : Result Json.Decode.Error a -> Expectation.Expectation

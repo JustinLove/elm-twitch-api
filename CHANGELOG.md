@@ -1,5 +1,10 @@
 ## Elm Twitch API
 
+## 7.0.0
+
+- TMI hosts no longer exists, decoder has been removed
+- Restored Kraken for a Kraken hosts decoder
+
 ## 6.1.0
 
 - access token module must be listed in elm.json; no code changes
@@ -16,7 +21,7 @@
 
 ## 5.0.0
 
-a Remove Kraken/V5 support. This is on depreciation track and all package features are removed or available in Helix.
+- Remove Kraken/V5 support. This is on depreciation track and all package features are removed or available in Helix.
 - Community ids removed from streams response, breaking previous decoder versions.
 - Added userName and tagIds to streams response
 
