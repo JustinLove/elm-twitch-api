@@ -404,7 +404,9 @@ type alias Clip =
   , url : String
   , embedUrl : String
   , broadcasterId : String
+  , broadcasterName : String
   , creatorId : String
+  , creatorName : String
   , videoId : String
   , gameId : String
   , language : String
@@ -427,7 +429,9 @@ clip =
     |> map2 (|>) (field "url" string)
     |> map2 (|>) (field "embed_url" string)
     |> map2 (|>) (field "broadcaster_id" string)
+    |> map2 (|>) (field "broadcaster_name" string)
     |> map2 (|>) (field "creator_id" string)
+    |> map2 (|>) (field "creator_name" string)
     |> map2 (|>) (field "video_id" string)
     |> map2 (|>) (field "game_id" string)
     |> map2 (|>) (field "language" string)
@@ -447,7 +451,9 @@ sampleClip = """
     "url": "https://clips.twitch.tv/AwkwardHelplessSalamanderSwiftRage",
     "embed_url": "https://clips.twitch.tv/embed?clip=AwkwardHelplessSalamanderSwiftRage",
     "broadcaster_id": "67955580",
+    "broadcaster_name": "ChewieMelodies",
     "creator_id": "53834192",
+    "creator_name": "BlackNova03",
     "video_id": "205586603",
     "game_id": "488191",
     "language": "en",
