@@ -1,3 +1,5 @@
+module HelixDecodeTest exposing (..)
+
 import Twitch.Helix.Decode exposing
   ( User
   , users
@@ -14,37 +16,32 @@ import Twitch.Helix.Decode exposing
   , sampleClip
   )
 
-import Expectation exposing (isTrue, isFalse)
-import Test exposing (it, describe, Test)
-import Runner exposing (runAll)
-
-import Html exposing (Html)
 import Json.Decode
 
-eql = Expectation.eql Debug.toString
+import Expect exposing (Expectation)
+import Test exposing (..)
 
-main : Html msg
-main =
-  runAll all
-
-all : Test
-all = describe "Deserialize"
-  [ it "deserializes sample user" <|
+suite : Test
+suite = describe "Deserialize"
+  [ test "deserializes sample user" <| \_ ->
     decodes <| Json.Decode.decodeString users sampleUser
-  , it "deserializes sample follow" <|
+  , test "deserializes sample follow" <| \_ ->
     decodes <| Json.Decode.decodeString follows sampleFollow
-  , it "deserializes sample bits leaderboard" <|
+  , test "deserializes sample bits leaderboard" <| \_ ->
     decodes <| Json.Decode.decodeString bitsLeaderboard sampleBitsLeaderboard
-  , it "deserializes sample subscription" <|
+  , test "deserializes sample subscription" <| \_ ->
     decodes <| Json.Decode.decodeString subscriptions sampleSubscription
-  , it "deserializes sample stream" <|
+  , test "deserializes sample stream" <| \_ ->
     decodes <| Json.Decode.decodeString streams sampleStream
-  , it "deserializes sample clip" <|
+  , test "deserializes sample clip" <| \_ ->
     decodes <| Json.Decode.decodeString clips sampleClip
   ]
 
-decodes : Result Json.Decode.Error a -> Expectation.Expectation
+--debug = Debug.log "result"
+debug = identity
+
+decodes : Result Json.Decode.Error a -> Expectation
 decodes result =
-  isTrue (case Debug.log "result" result of
+  Expect.true "decodes" (case debug result of
     Ok _ -> True
     Err _ -> False)
