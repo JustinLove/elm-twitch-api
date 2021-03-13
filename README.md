@@ -21,6 +21,25 @@ Partial coverage of the APIs I have used.
         , url = (fetchUserByNameUrl login)
         }
 
+## Decoder example
+
+type alias MySubscription =
+  { userId : Helix.UserId
+  , displayName : String
+  , months : Int
+  , tier : String
+  }
+
+Helix.data mySubscription
+
+mySubscription : Decoder MySubscription
+mySubscription =
+  Json.Decode.succeed MySubscription
+    |> map2 (|>) (Helix.Subscription.userId)
+    Helix.Subscription.displayName
+    0
+    Helix.Subscription.tier
+
 ## Example applications using this library:
 
 - https://github.com/JustinLove/following_videos ([Following Videos](https://wondible.com/following_videos/))

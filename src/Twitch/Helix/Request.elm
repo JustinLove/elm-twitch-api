@@ -1,11 +1,4 @@
-module Twitch.Helix exposing
-  ( UserId
-  , userId
-  , ClipId
-  , clipId
-  , send
-  , twitchHeaders
-  )
+module Twitch.Helix.Request exposing (send, twitchHeaders)
 
 {-| Helpers for sending Http requests to the Twitch Helix ("new Twitch API") endpoints.
 
@@ -18,18 +11,8 @@ Useful if you need to make your own Http call with additional headers.
 
 -}
 
-import Twitch.Helix.Request
-
-import Json.Decode exposing (..)
-
-type alias UserId = String
-type alias ClipId = String
-
-userId : Decoder UserId
-userId = string
-
-clipId : Decoder ClipId
-clipId = string
+import Http
+import Json.Decode
 
 {-| Send a basic request to the Twitch Helix ("new Twitch API") endpoints. Lightweight wrapper around Http, so you can go back to basics if something else is needed. Auth is a token received from an oauth loop.
 
@@ -39,7 +22,7 @@ clipId = string
 
     fetchUserByName : String -> String -> Cmd Msg
     fetchUserByName auth login =
-      Twitch.Helix.send <|
+      Twitch.Helix.Request.send <|
         { clientId = TwitchId.clientId
         , auth = auth
         , decoder = Twitch.Helix.Decode.users
@@ -47,10 +30,30 @@ clipId = string
         , url = (fetchUserByNameUrl login)
         }
 -}
-send = Twitch.Helix.Request.send
+send :
+  { clientId : String
+  , auth : String
+  , decoder : Json.Decode.Decoder a
+  , tagger : ((Result Http.Error a) -> msg)
+  , url : String
+  } -> Cmd msg
+send {clientId, auth, decoder, tagger, url} =
+  Http.request
+    { method = "GET"
+    , headers = twitchHeaders clientId auth
+    , url = url
+    , body = Http.emptyBody
+    , expect = Http.expectJson tagger decoder
+    , timeout = Nothing
+    , tracker = Nothing
+    }
 
 {-| Creates the client-id and outh headers.
 
     Twitch.Helix.twitchHeaders clientId auth
 -}
-twitchHeaders = Twitch.Helix.Request.twitchHeaders
+twitchHeaders : String -> String -> List Http.Header
+twitchHeaders clientId token =
+  [ Http.header "Client-ID" clientId
+  , Http.header "Authorization" ("Bearer "++token)
+  ]
