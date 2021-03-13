@@ -28,6 +28,8 @@ module Twitch.Helix.Decode exposing
   , Token
   , token
   , sampleToken
+  , duration
+  , timeStamp
   )
 
 {-| Decoders for the Helix API.
@@ -603,6 +605,8 @@ sampleToken : String
 sampleToken = """{ sub = "12345678", iss = "https://api.twitch.tv/api", aud = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", exp = 1511110246, iat = 1511109346 }"""
 
 
+{-| Decode a duration value of the form 1h23m45s
+-}
 duration : Decoder Int
 duration =
   string
@@ -611,5 +615,7 @@ duration =
       Err err -> fail ("duration parse error" ++ (Parse.deadEndsToString err))
     )
 
+{-| Decode a timestamp value
+-}
 timeStamp : Decoder Posix
 timeStamp = Iso8601.decoder

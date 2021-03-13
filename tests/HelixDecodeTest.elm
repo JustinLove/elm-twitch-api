@@ -14,6 +14,8 @@ import Twitch.Helix.Decode exposing
   , sampleStream
   , clips
   , sampleClip
+  , duration
+  , timeStamp
   )
 
 import Json.Decode
@@ -23,18 +25,26 @@ import Test exposing (..)
 
 suite : Test
 suite = describe "Deserialize"
-  [ test "deserializes sample user" <| \_ ->
-    decodes <| Json.Decode.decodeString users sampleUser
-  , test "deserializes sample follow" <| \_ ->
-    decodes <| Json.Decode.decodeString follows sampleFollow
-  , test "deserializes sample bits leaderboard" <| \_ ->
-    decodes <| Json.Decode.decodeString bitsLeaderboard sampleBitsLeaderboard
-  , test "deserializes sample subscription" <| \_ ->
-    decodes <| Json.Decode.decodeString subscriptions sampleSubscription
-  , test "deserializes sample stream" <| \_ ->
-    decodes <| Json.Decode.decodeString streams sampleStream
-  , test "deserializes sample clip" <| \_ ->
-    decodes <| Json.Decode.decodeString clips sampleClip
+  [ describe "full records"
+    [ test "deserializes sample user" <| \_ ->
+      decodes <| Json.Decode.decodeString users sampleUser
+    , test "deserializes sample follow" <| \_ ->
+      decodes <| Json.Decode.decodeString follows sampleFollow
+    , test "deserializes sample bits leaderboard" <| \_ ->
+      decodes <| Json.Decode.decodeString bitsLeaderboard sampleBitsLeaderboard
+    , test "deserializes sample subscription" <| \_ ->
+      decodes <| Json.Decode.decodeString subscriptions sampleSubscription
+    , test "deserializes sample stream" <| \_ ->
+      decodes <| Json.Decode.decodeString streams sampleStream
+    , test "deserializes sample clip" <| \_ ->
+      decodes <| Json.Decode.decodeString clips sampleClip
+    ]
+  , describe "type decoders"
+    [ test "decode duration" <| \_ ->
+      Expect.equal
+        (Ok ((60 * 60 * 11 + 60 * 2 + 3) * 1000))
+        (Json.Decode.decodeString duration "\"11h02m3s\"")
+    ]
   ]
 
 --debug = Debug.log "result"
