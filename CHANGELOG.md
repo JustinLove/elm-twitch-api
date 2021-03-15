@@ -2,6 +2,7 @@
 
 ## 7.0.0
 
+- Library reoganized as individual field decoders in api response modules, rather than whole-response decoders
 - TMI hosts no longer exists, decoder has been removed
 - Restored Kraken for a Kraken hosts decoder
 

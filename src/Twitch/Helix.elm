@@ -3,54 +3,54 @@ module Twitch.Helix exposing
   , userId
   , ClipId
   , clipId
-  , send
-  , twitchHeaders
+  , VideoId
+  , videoId
+  , GameId
+  , gameId
+  , StreamId
+  , streamId
+  , timeStamp
+  , duration
   )
 
-{-| Helpers for sending Http requests to the Twitch Helix ("new Twitch API") endpoints.
+import Twitch.Parse as Parse
 
-# Send a Request
-@docs send
-
-# Header Helpers
-Useful if you need to make your own Http call with additional headers.
-@docs twitchHeaders
-
--}
-
-import Twitch.Helix.Request
-
+import Iso8601
 import Json.Decode exposing (..)
+import Parser.Advanced as Parser
+import Time exposing (Posix)
 
 type alias UserId = String
-type alias ClipId = String
-
 userId : Decoder UserId
 userId = string
 
+type alias ClipId = String
 clipId : Decoder ClipId
 clipId = string
 
-{-| Send a basic request to the Twitch Helix ("new Twitch API") endpoints. Lightweight wrapper around Http, so you can go back to basics if something else is needed. Auth is a token received from an oauth loop.
+type alias VideoId = String
+videoId : Decoder VideoId
+videoId = string
 
-    fetchUserByNameUrl : String -> String
-    fetchUserByNameUrl login =
-      "https://api.twitch.tv/helix/users?login=" ++ login
+type alias GameId = String
+gameId : Decoder GameId
+gameId = string
 
-    fetchUserByName : String -> String -> Cmd Msg
-    fetchUserByName auth login =
-      Twitch.Helix.send <|
-        { clientId = TwitchId.clientId
-        , auth = auth
-        , decoder = Twitch.Helix.Decode.users
-        , tagger = User
-        , url = (fetchUserByNameUrl login)
-        }
+type alias StreamId = String
+streamId : Decoder StreamId
+streamId = string
+
+{-| Decode a timestamp value
 -}
-send = Twitch.Helix.Request.send
+timeStamp : Decoder Posix
+timeStamp = Iso8601.decoder
 
-{-| Creates the client-id and outh headers.
-
-    Twitch.Helix.twitchHeaders clientId auth
+{-| Decode a duration value of the form 1h23m45s
 -}
-twitchHeaders = Twitch.Helix.Request.twitchHeaders
+duration : Decoder Int
+duration =
+  string
+    |> andThen (\s -> case Parser.run Parse.duration s of
+      Ok d -> succeed d
+      Err err -> fail ("duration parse error" ++ (Parse.deadEndsToString err))
+    )

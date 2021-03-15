@@ -1,4 +1,4 @@
-module Twitch.Kraken exposing (send, twitchHeaders, authHeaders)
+module Twitch.Kraken.Request exposing (send, twitchHeaders, authHeaders)
 
 {-| Helpers for sending Http requests to the Twitch Kraken ("V5") endpoints.
 
@@ -22,10 +22,10 @@ import Json.Decode
 
     fetchHosts : String -> Cmd Msg
     fetchHosts id =
-      Kraken.send <|
+      Twitch.Kraken.Request.send <|
         { clientId = TwitchId.clientId
         , auth = Nothing
-        , decoder = Kraken.hosts
+        , decoder = hostsDecoder
         , tagger = Hosts
         , url = (fetchHostsUrl id)
         }
@@ -51,7 +51,7 @@ send {clientId, auth, decoder, tagger, url} =
 
 {-| Creates the client-id and outh headers.
 
-    Twitch.Kraken.twitchHeaders clientId auth
+    Twitch.Kraken.Request.twitchHeaders clientId auth
 -}
 twitchHeaders : String -> Maybe String -> List Http.Header
 twitchHeaders clientId auth =
