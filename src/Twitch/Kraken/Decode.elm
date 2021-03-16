@@ -6,7 +6,7 @@ module Twitch.Kraken.Decode exposing
 
 {-| Decoders for the Karken API at `https://api.twitch.tv/kraken/channels/CHANNELID/hosts` Note that this is an unofficial API
 
-@docs Host, hosts
+@docs Host, hosts, sampleHost
 
 -}
 

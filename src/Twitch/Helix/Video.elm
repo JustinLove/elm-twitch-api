@@ -20,38 +20,92 @@ module Twitch.Helix.Video exposing
   , sampleVideo
   )
 
+{-| JSON Decoders for Helix Video responses
+
+Use these pieces to pull out the parts your application needs.
+
+    import Twitch.Helix.Video as Video
+    import Json.Decode exposing (..)
+
+    events : Decoder (List Event)
+    events =
+      Video.response video
+        |> map (List.filterMap (\(videoType, ev) -> if videoType == Video.Archive then Just ev else Nothing))
+
+    video : Decoder (Video.VideoType, Event)
+    video =
+      map2 Tuple.pair
+        Video.videoType
+        event
+
+    event : Decoder Event
+    event =
+      map2 Event
+        Video.createdAt
+        Video.duration
+
+# Field decoders
+@docs id, userId, userLogin, userName, title, description, createdAt, publishedAt, url, thumbnailUrl, language, Viewable, viewable, viewCount, videoType, VideoType, duration
+
+# Response decoder
+@docs response
+
+# Sample Data
+@docs sampleVideo
+-}
+
 import Twitch.Helix as Helix
 
 import Json.Decode exposing (..)
 import Time exposing (Posix)
 
+{-| Id of the video
+-}
 id : Decoder Helix.VideoId
 id = (field "id" Helix.videoId)
 
+{-| Id of the channel the video is from
+-}
 userId : Decoder Helix.UserId
 userId = (field "user_id" Helix.userId)
 
+{-| Login of the channel the video is from
+-}
 userLogin : Decoder String
 userLogin = (field "user_login" string)
 
+{-| Name of the channel the video is from
+-}
 userName : Decoder String
 userName = (field "user_name" string)
 
+{-| Title of the video
+-}
 title : Decoder String
 title = (field "title" string)
 
+{-| Description of the video
+-}
 description : Decoder String
 description = (field "description" string)
 
+{-| Time the video was created
+-}
 createdAt : Decoder Posix
 createdAt = (field "created_at" Helix.timeStamp)
 
+{-| Time the video was published
+-}
 publishedAt : Decoder Posix
 publishedAt = (field "published_at" Helix.timeStamp)
 
+{-| Thumbnail
+-}
 thumbnailUrl : Decoder String
 thumbnailUrl = (field "thumbnail_url" string)
 
+{-| Url to view the video
+-}
 url : Decoder String
 url = (field "url" string)
 
@@ -70,12 +124,18 @@ viewableDecoder =
       _ -> Private
     )
 
+{-| Whether the video is public or private
+-}
 viewable : Decoder Viewable
 viewable = (field "viewable" viewableDecoder)
 
+{-| Number of views on the video
+-}
 viewCount : Decoder Int
 viewCount = (field "view_count" int)
 
+{-| Language code
+-}
 language : Decoder String
 language = (field "language" string)
 
@@ -97,17 +157,23 @@ videoTypeValue =
       _ -> Other s
     )
 
+{-| Type of the video
+-}
 videoType : Decoder VideoType
 videoType = (field "type" videoTypeValue)
 
+{-| Number of milliseconds, with second accuracy
+-}
 duration : Decoder Int
 duration = (field "duration" Helix.duration)
 
+{-| Decode individual records from the api response using the specified decoder
+-}
 response : Decoder a -> Decoder (List a)
 response decoder =
   field "data" (list decoder)
 
-{-| Sample data for a video
+{-| Sample response for a video
 -}
 sampleVideo : String
 sampleVideo = """

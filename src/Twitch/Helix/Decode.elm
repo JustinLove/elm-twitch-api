@@ -61,6 +61,9 @@ module Twitch.Helix.Decode exposing
 # OAuth tokens
 @docs Token, token
 
+# Helpers
+@docs timeStamp, duration
+
 # Sample data
 @docs sampleToken, sampleUser, sampleStream, sampleGame, sampleFollow, sampleVideo, sampleClip, sampleBitsLeaderboard, sampleSubscription
 -}
