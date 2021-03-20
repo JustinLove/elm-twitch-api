@@ -13,6 +13,9 @@ suite = describe "Deserialize"
     [ test "access token" <| \_ ->
       app accessToken
         "0123456789abcdefghijABCDEFGHIJ"
+    , test "refresh token" <| \_ ->
+      app refreshToken
+        "eyJfaWQmNzMtNGCJ9%6VFV5LNrZFUj8oU231/3Aj"
     , test "expires in" <| \_ ->
       app expiresIn
         3600
