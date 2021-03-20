@@ -6,22 +6,20 @@
     "version": "6.1.0",
     "exposed-modules": [
         "Twitch.Helix",
-        "Twitch.Helix.Request",
-        "Twitch.Helix.Decode",
         "Twitch.Helix.BitsLeaderboard",
         "Twitch.Helix.Clip",
         "Twitch.Helix.Follow",
         "Twitch.Helix.Game",
+        "Twitch.Helix.Request",
         "Twitch.Helix.Stream",
         "Twitch.Helix.Subscription",
         "Twitch.Helix.User",
         "Twitch.Helix.Video",
-        "Twitch.Id.Decode",
+        "Twitch.Id.OAuth",
         "Twitch.Id.Token",
         "Twitch.Template",
-        "Twitch.Kraken.Request",
-        "Twitch.Kraken.Decode",
-        "Twitch.Kraken.Host"
+        "Twitch.Kraken.Host",
+        "Twitch.Kraken.Request"
     ],
     "elm-version": "0.19.0 <= v < 0.20.0",
     "dependencies": {

@@ -12,7 +12,6 @@ Most modules provide decoders for a specific api request. Notable exceptions inc
 - Twitch.Helix - generic types and decoders
 - Twitch.Helix.Request - HTTP request helper
 - Twitch.Kraken.Request - HTTP request helper
-- Twitch.Parse - internal value parsers
 - Twitch.Template - template url helpers
 
 ## Decoder Modules
